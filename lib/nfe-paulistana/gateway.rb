@@ -92,7 +92,8 @@ module NfePaulistana
                    wsdl: @options[:wsdl], 
                    endpoint: @options[:endpoint],
                    open_timeout: 300,
-                   read_timeout: 300)
+                   read_timeout: 300,
+                   headers: { 'SOAPAction' => ''})
                    
     end
   end
