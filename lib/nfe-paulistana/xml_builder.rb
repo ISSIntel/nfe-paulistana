@@ -87,17 +87,15 @@ module NfePaulistana
     def xml(method, data)
       builder = Nokogiri::XML::Builder.new do |xml|
         if method == :recepcionar_lote_rps
-          xml.Value {
-            xml.send(METHODS[method], "xmlns" => "http://www.abrasf.org.br/nfse.xsd" ) {
-              xml.LoteRps( :Id => data[:numero_lote] , "versao" => "2.01") {
-                xml.NumeroLote data[:numero_lote]
-                xml.CpfCnpj {
-                  xml.Cpf data[:cpf_remetente] unless data[:cpf_remetente].blank?
-                  xml.Cnpj data[:cnpj_remetente] unless data[:cnpj_remetente].blank?
-                }
-                send("add_#{method}_cabecalho_data_to_xml", xml, data)
-                send("add_#{method}_data_to_xml", xml, data)
+          xml.send(METHODS[method], "xmlns" => "http://www.abrasf.org.br/nfse.xsd" ) {
+            xml.LoteRps( :Id => data[:numero_lote] , "versao" => "2.01") {
+              xml.NumeroLote data[:numero_lote]
+              xml.CpfCnpj {
+                xml.Cpf data[:cpf_remetente] unless data[:cpf_remetente].blank?
+                xml.Cnpj data[:cnpj_remetente] unless data[:cnpj_remetente].blank?
               }
+              send("add_#{method}_cabecalho_data_to_xml", xml, data)
+              send("add_#{method}_data_to_xml", xml, data)
             }
           }
         else
@@ -109,7 +107,7 @@ module NfePaulistana
           }
         end
       end
-      Nokogiri::XML( builder.to_xml( :save_with => Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION ) )
+      Nokogiri::XML( builder.to_xml( :save_with => Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION ) ).root.to_xml
       #builder.to_xml( :save_with => Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION ) 
     end
 
