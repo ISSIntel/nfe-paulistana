@@ -66,7 +66,11 @@ module NfePaulistana
       request(:consulta_cnpj, data)
     end
 
-    private
+#    private
+
+    def xml_msg(method, data)
+      message = XmlBuilder.new.xml_for(method, data)
+    end
 
     def certificate
       OpenSSL::PKCS12.new(File.read(@options[:ssl_cert_p12_path]), @options[:ssl_cert_pass])
